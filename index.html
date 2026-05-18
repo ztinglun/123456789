@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐾 毛孩樂園 — 寵物分享交流平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FFF8F0;
+  --warm-white: #FFFDF9;
+  --peach: #FFB347;
+  --peach-light: #FFE0B2;
+  --peach-soft: #FFF3E0;
+  --coral: #FF7043;
+  --coral-light: #FFCCBC;
+  --mint: #4CAF94;
+  --mint-light: #C8E6C9;
+  --mint-soft: #E8F5E9;
+  --lavender: #B39DDB;
+  --lavender-light: #EDE7F6;
+  --sky: #4FC3F7;
+  --sky-light: #E1F5FE;
+  --rose: #F48FB1;
+  --rose-light: #FCE4EC;
+  --text-dark: #3E2723;
+  --text-mid: #6D4C41;
+  --text-soft: #A1887F;
+  --border: #FFD7B5;
+  --shadow: rgba(255, 179, 71, 0.25);
+  --shadow-deep: rgba(62, 39, 35, 0.12);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── BACKGROUND PATTERN ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255,179,71,0.08) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(76,195,247,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(179,157,219,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── PAGE SYSTEM ─── */
+.page { display: none; position: relative; z-index: 1; min-height: 100vh; }
+.page.active { display: flex; flex-direction: column; }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  background: rgba(255, 248, 240, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--border);
+  padding: 0 1.5rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px var(--shadow);
+}
+
+.nav-logo {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  color: var(--coral);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.nav-logo .paw { font-size: 1.4rem; animation: waggle 3s ease-in-out infinite; }
+
+@keyframes waggle {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+
+.nav-links { display: flex; align-items: center; gap: 0.75rem; }
+
+.nav-btn {
+  padding: 8px 18px;
+  border-radius: var(--radius-xl);
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn-outline {
+  background: transparent;
+  color: var(--coral);
+  border: 2px solid var(--coral);
+}
+.nav-btn-outline:hover { background: var(--coral); color: #fff; transform: translateY(-1px); }
+
+.nav-btn-fill {
+  background: linear-gradient(135deg, var(--peach), var(--coral));
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(255,112,67,0.35);
+}
+.nav-btn-fill:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,112,67,0.45); }
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--peach);
+}
+
+.nav-avatar-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--peach), var(--coral));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border-radius: var(--radius-xl);
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--peach), var(--coral));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(255,112,67,0.38);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,112,67,0.48); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  background: var(--mint);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(76,175,148,0.35);
+}
+.btn-secondary:hover { background: #3d9e7f; transform: translateY(-2px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--coral);
+  border: 2px solid var(--coral);
+}
+.btn-ghost:hover { background: var(--coral-light); }
+
+.btn-lg { padding: 14px 32px; font-size: 1rem; }
+.btn-sm { padding: 6px 14px; font-size: 0.82rem; }
+
+/* ─── CARDS ─── */
+.card {
+  background: var(--warm-white);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border);
+  box-shadow: 0 4px 20px var(--shadow-deep);
+  overflow: hidden;
+}
+
+/* ─── FORM ELEMENTS ─── */
+.form-group { margin-bottom: 1rem; }
+.form-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  background: var(--warm-white);
+  transition: all 0.2s ease;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--peach);
+  box-shadow: 0 0 0 3px rgba(255,179,71,0.18);
+}
+
+textarea.form-input { resize: vertical; min-height: 100px; }
+
+/* ─── TOAST ─── */
+.toast-container {
+  position: fixed;
+  top: 80px;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #fff;
+  max-width: 280px;
+  animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+.toast-success { background: linear-gradient(135deg, #4CAF94, #2e7d64); }
+.toast-error { background: linear-gradient(135deg, #e57373, #c62828); }
+.toast-info { background: linear-gradient(135deg, var(--peach), var(--coral)); }
+
+@keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(62, 39, 35, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--warm-white);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  box-shadow: 0 12px 40px rgba(62,39,35,0.2);
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+
+.modal-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem;
+  color: var(--coral);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE: AUTH (Login / Register)
+═══════════════════════════════════════════ */
+#page-auth {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.auth-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-hero-icon {
+  font-size: 5rem;
+  line-height: 1;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.auth-hero h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.8rem;
+  color: var(--coral);
+  line-height: 1.1;
+  margin-top: 0.5rem;
+}
+
+.auth-hero p {
+  color: var(--text-soft);
+  font-size: 1rem;
+  margin-top: 0.4rem;
+}
+
+.auth-card {
+  max-width: 420px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.auth-tabs {
+  display: flex;
+  background: var(--peach-soft);
+  border-radius: var(--radius-xl);
+  padding: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-xl);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-tab.active {
+  background: #fff;
+  color: var(--coral);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.auth-form { display: none; }
+.auth-form.active { display: block; }
+
+.avatar-upload-area {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.avatar-preview {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border);
+  flex-shrink: 0;
+  background: var(--peach-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  overflow: hidden;
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.avatar-upload-btn {
+  padding: 8px 16px;
+  border: 2px dashed var(--peach);
+  border-radius: var(--radius-md);
+  background: var(--peach-soft);
+  color: var(--coral);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.avatar-upload-btn:hover { background: var(--peach-light); }
+
+/* ═══════════════════════════════════════════
+   PAGE: HOME (Personal)
+═══════════════════════════════════════════ */
+#page-home { background: var(--cream); }
+
+.home-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  align-items: start;
+}
+
+.sidebar {
+  position: sticky;
+  top: 80px;
+}
+
+.profile-card {
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 1rem;
+}
+
+.profile-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3.5px solid var(--peach);
+  box-shadow: 0 4px 16px rgba(255,179,71,0.35);
+}
+
+.profile-avatar-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: var(--mint);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #fff;
+}
+
+.profile-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  color: var(--text-dark);
+}
+
+.profile-id {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1.5px solid var(--border);
+}
+
+.stat-item { text-align: center; }
+.stat-num { font-weight: 800; font-size: 1.1rem; color: var(--coral); }
+.stat-label { font-size: 0.75rem; color: var(--text-soft); }
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  width: 100%;
+}
+.nav-menu-item:hover { background: var(--peach-soft); color: var(--coral); }
+.nav-menu-item.active { background: var(--coral); color: #fff; }
+
+.main-content { min-height: 60vh; }
+
+/* ─── NEW POST BANNER ─── */
+.new-post-banner {
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px dashed var(--border);
+  background: rgba(255,248,240,0.7);
+}
+.new-post-banner:hover { border-color: var(--peach); background: var(--peach-soft); }
+
+.new-post-input-mock {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--cream);
+  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--border);
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+}
+
+/* ─── POST CARDS ─── */
+.post-card {
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; }
+
+.post-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  background: var(--peach-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--coral);
+  overflow: hidden;
+}
+
+.post-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.post-meta { flex: 1; }
+.post-author { font-weight: 800; font-size: 0.92rem; color: var(--text-dark); }
+.post-author span { color: var(--text-soft); font-weight: 600; font-size: 0.8rem; margin-left: 6px; }
+.post-time { font-size: 0.78rem; color: var(--text-soft); margin-top: 1px; }
+
+.post-topic {
+  display: inline-block;
+  background: var(--peach-soft);
+  color: var(--coral);
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 0.5rem;
+}
+
+.post-content { color: var(--text-mid); font-size: 0.92rem; line-height: 1.7; margin-bottom: 0.75rem; }
+
+.post-image {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1.5px solid var(--border);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-xl);
+  border: none;
+  background: transparent;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.action-btn:hover { background: var(--peach-soft); color: var(--coral); }
+.action-btn.liked { color: var(--coral); }
+.action-btn.liked .heart-icon { transform: scale(1.2); }
+
+.heart-icon { font-size: 1rem; transition: transform 0.2s; }
+
+/* ─── COMMENTS ─── */
+.comments-section {
+  display: none;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1.5px dashed var(--border);
+}
+.comments-section.open { display: block; }
+
+.comment-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0.6rem;
+  animation: fadeUp 0.2s ease;
+}
+
+.comment-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--lavender-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--lavender);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.comment-bubble {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 0 var(--radius-md) var(--radius-md) var(--radius-md);
+  padding: 8px 12px;
+  flex: 1;
+}
+.comment-author { font-weight: 800; font-size: 0.8rem; color: var(--text-dark); }
+.comment-text { font-size: 0.85rem; color: var(--text-mid); margin-top: 2px; }
+
+.comment-input-area {
+  display: flex;
+  gap: 8px;
+  margin-top: 0.75rem;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 8px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-xl);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  background: var(--warm-white);
+  transition: border-color 0.2s;
+}
+.comment-input:focus { border-color: var(--peach); }
+
+/* ═══════════════════════════════════════════
+   PAGE: NEW POST
+═══════════════════════════════════════════ */
+#page-new-post {
+  background: var(--cream);
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.new-post-container {
+  max-width: 600px;
+  width: 100%;
+}
+
+.new-post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.post-author-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem 1.25rem;
+  background: var(--peach-soft);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+}
+
+.post-author-preview .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid var(--peach);
+  background: var(--peach-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: var(--coral);
+  overflow: hidden;
+}
+.post-author-preview .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.post-author-info .name { font-weight: 800; font-size: 0.95rem; color: var(--text-dark); }
+.post-author-info .id { font-size: 0.8rem; color: var(--text-soft); }
+
+.image-upload-zone {
+  border: 2.5px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  text-align: center;
+  background: var(--peach-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+.image-upload-zone:hover { border-color: var(--peach); background: var(--peach-light); }
+.image-upload-zone p { color: var(--text-soft); font-size: 0.88rem; margin-top: 6px; }
+
+.image-preview-wrap { position: relative; margin-bottom: 1rem; }
+.image-preview-wrap img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+}
+.remove-image-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(62,39,35,0.7);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE: SHARE ZONE
+═══════════════════════════════════════════ */
+#page-share {
+  background: var(--cream);
+}
+
+.share-hero {
+  background: linear-gradient(135deg, #FFE0B2 0%, #FFCCBC 100%);
+  text-align: center;
+  padding: 2.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.share-hero::before {
+  content: '🐱🐶🐰🐹🐦🐾';
+  font-size: 2rem;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  opacity: 0.18;
+  letter-spacing: 1rem;
+}
+
+.share-hero h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.2rem;
+  color: var(--coral);
+  position: relative;
+}
+
+.share-hero p {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
+  position: relative;
+}
+
+.share-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-soft);
+}
+.empty-state .icon { font-size: 4rem; margin-bottom: 0.75rem; }
+.empty-state p { font-size: 0.95rem; }
+
+/* ─── TAG BADGE ─── */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-xl);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.tag-peach { background: var(--peach-soft); color: var(--coral); }
+.tag-mint { background: var(--mint-soft); color: var(--mint); }
+.tag-lavender { background: var(--lavender-light); color: var(--lavender); }
+.tag-sky { background: var(--sky-light); color: #0288D1; }
+
+/* ─── FLOATING PETS ─── */
+.floating-pet {
+  position: fixed;
+  pointer-events: none;
+  font-size: 2rem;
+  opacity: 0.12;
+  animation: floatUp 18s linear infinite;
+  z-index: 0;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.12; }
+  90% { opacity: 0.12; }
+  to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 720px) {
+  .home-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .profile-stats { gap: 2rem; }
+}
+
+/* ─── CAPTCHA ─── */
+.captcha-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.captcha-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s;
+}
+.captcha-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.captcha-img-wrap.selected {
+  border-color: var(--coral);
+}
+.captcha-img-wrap.selected::after {
+  content: '✔️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: var(--coral);
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upload-captcha-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+  background: var(--peach-soft);
+  color: var(--coral);
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 2px dashed var(--peach);
+}
+.upload-captcha-btn:hover {
+  background: var(--peach-light);
+}
+</style>
+</head>
+<body>
+
+<!-- FLOATING PETS BG -->
+<div class="floating-pet" style="left:8%;animation-delay:0s">🐾</div>
+<div class="floating-pet" style="left:25%;animation-delay:4s">🐱</div>
+<div class="floating-pet" style="left:48%;animation-delay:9s">🐶</div>
+<div class="floating-pet" style="left:70%;animation-delay:2s">🐰</div>
+<div class="floating-pet" style="left:88%;animation-delay:13s">🐹</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ══════════════════════════════════
+  PAGE: AUTH
+══════════════════════════════════ -->
+<div class="page active" id="page-auth">
+  <div style="max-width:420px;width:100%;margin:auto;">
+    <div class="auth-hero">
+      <div class="auth-hero-icon">🐾</div>
+      <h1>毛孩樂園</h1>
+      <p>分享你和寵物的每一個瞬間 ✨</p>
+    </div>
+
+    <div class="card auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">登入</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">註冊</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div class="auth-form active" id="form-login">
+        <div class="form-group">
+          <label class="form-label">🏷️ 帳號 ID</label>
+          <input type="text" class="form-input" id="login-id" placeholder="輸入你的 ID">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🔒 密碼</label>
+          <input type="password" class="form-input" id="login-pw" placeholder="輸入密碼">
+        </div>
+        <button class="btn btn-primary btn-lg" style="width:100%;margin-top:0.5rem" onclick="doLogin()">
+          🐾 登入毛孩樂園
+        </button>
+        <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--text-soft)">
+          還沒有帳號？<button onclick="switchAuthTab('register')" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">立即註冊 →</button>
+        </p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div class="auth-form" id="form-register">
+        <div class="form-group">
+          <label class="form-label">🖼️ 個人頭貼</label>
+          <div class="avatar-upload-area">
+            <div class="avatar-preview" id="reg-avatar-preview">
+              <span id="reg-avatar-emoji">🐾</span>
+              <img id="reg-avatar-img" src="" alt="">
+            </div>
+            <div>
+              <label for="reg-avatar-input" class="avatar-upload-btn">📷 上傳頭貼</label>
+              <input type="file" id="reg-avatar-input" accept="image/*" style="display:none" onchange="previewAvatar(this)">
+              <p style="font-size:0.78rem;color:var(--text-soft);margin-top:4px">支援 JPG / PNG / GIF</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏷️ 帳號 ID</label>
+          <input type="text" class="form-input" id="reg-id" placeholder="設定唯一的 ID（英文/數字）">
+        </div>
+        <div class="form-group">
+          <label class="form-label">😸 暱稱</label>
+          <input type="text" class="form-input" id="reg-name" placeholder="你的顯示名稱">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🔒 密碼</label>
+          <input type="password" class="form-input" id="reg-pw" placeholder="設定密碼（至少 4 位）">
+        </div>
+        <button class="btn btn-secondary btn-lg" style="width:100%;margin-top:0.5rem" onclick="doRegister()">
+          🎉 建立帳號
+        </button>
+        <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--text-soft)">
+          已有帳號？<button onclick="switchAuthTab('login')" style="background:none;border:none;color:var(--coral);font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">直接登入 →</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+  PAGE: HOME (Personal)
+══════════════════════════════════ -->
+<div class="page" id="page-home">
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="nav-logo" onclick="goToShare()" style="cursor:pointer">
+      <span class="paw">🐾</span> 毛孩樂園
+    </a>
+    <div class="nav-links">
+      <button class="nav-btn nav-btn-outline" onclick="goToShare()">🌟 分享區</button>
+      <div class="nav-user" id="nav-user-home">
+        <div class="nav-avatar-placeholder" id="nav-avatar-placeholder-home"></div>
+        <span style="font-weight:700;font-size:0.88rem;color:var(--text-dark)" id="nav-username-home"></span>
+        <button class="nav-btn nav-btn-outline" onclick="doLogout()" style="margin-left:4px">登出</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN LAYOUT -->
+  <div class="home-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="card profile-card">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="home-profile-avatar" style="display:flex;align-items:center;justify-content:center;font-size:2.2rem;background:var(--peach-soft);border:3.5px solid var(--peach);">🐾</div>
+        </div>
+        <div class="profile-name" id="home-profile-name">毛孩主人</div>
+        <div class="profile-id" id="home-profile-id">@id</div>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="stat-posts">0</div>
+            <div class="stat-label">貼文</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="stat-likes">0</div>
+            <div class="stat-label">獲讚</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0.75rem;">
+        <div class="nav-menu">
+          <button class="nav-menu-item active" onclick="showHomeTab('my-posts')">📝 我的貼文</button>
+          <button class="nav-menu-item" onclick="goToShare()">🌟 探索分享區</button>
+          <button class="nav-menu-item" onclick="goToNewPost()">✏️ 發布新貼文</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+      <!-- New Post Banner -->
+      <div class="card new-post-banner" onclick="goToNewPost()">
+        <div class="profile-avatar" id="banner-avatar" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:var(--peach-soft);border:2px solid var(--border);border-radius:50%;flex-shrink:0;">🐾</div>
+        <div class="new-post-input-mock">想分享今天和毛孩的故事嗎？✨</div>
+        <button class="btn btn-primary btn-sm">+ 新增貼文</button>
+      </div>
+
+      <!-- Posts List -->
+      <div id="my-posts-list">
+        <div class="empty-state" id="my-posts-empty">
+          <div class="icon">📭</div>
+          <p>還沒有貼文哦，快去分享你的毛孩故事！</p>
+          <button class="btn btn-primary" style="margin-top:1rem" onclick="goToNewPost()">✏️ 發第一篇貼文</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+  PAGE: NEW POST
+══════════════════════════════════ -->
+<div class="page" id="page-new-post">
+  <nav class="navbar">
+    <a class="nav-logo" style="cursor:pointer" onclick="goToHome()">
+      <span class="paw">🐾</span> 毛孩樂園
+    </a>
+    <div class="nav-links">
+      <button class="nav-btn nav-btn-outline" onclick="goToHome()">← 返回首頁</button>
+    </div>
+  </nav>
+
+  <div class="new-post-container" style="padding: 2rem 1rem; margin: 0 auto;">
+    <div class="new-post-header">
+      <span style="font-size:1.5rem">✏️</span>
+      <h2 style="font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--coral)">發布新貼文</h2>
+    </div>
+
+    <div class="card" style="padding:1.5rem;">
+      <!-- Author Preview -->
+      <div class="post-author-preview">
+        <div class="avatar" id="np-avatar" style="font-size:1.4rem">🐾</div>
+        <div class="post-author-info">
+          <div class="name" id="np-name">毛孩主人</div>
+          <div class="id" id="np-id">@id</div>
+        </div>
+        <div style="margin-left:auto"><span class="tag tag-mint">✨ 發文中</span></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">🏷️ 發布主題</label>
+        <input type="text" class="form-input" id="post-topic" placeholder="例如：今天帶毛毛去公園玩耍！">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">💬 內容</label>
+        <textarea class="form-input" id="post-content" rows="5" placeholder="分享你和寵物的故事、趣事或小知識..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">📷 上傳照片（可選）</label>
+        <div id="np-image-zone">
+          <div class="image-upload-zone" onclick="document.getElementById('np-img-input').click()">
+            <div style="font-size:2.5rem">🖼️</div>
+            <p>點擊上傳照片，或拖曳到此處</p>
+            <p style="font-size:0.78rem">JPG / PNG / GIF · 最大 10MB</p>
+          </div>
+          <input type="file" id="np-img-input" accept="image/*" style="display:none" onchange="previewPostImage(this)">
+        </div>
+        <div class="image-preview-wrap" id="np-img-preview" style="display:none">
+          <img id="np-img-preview-img" src="" alt="">
+          <button class="remove-image-btn" onclick="removePostImage()">✕</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:1rem;margin-top:0.5rem">
+        <button class="btn btn-ghost" style="flex:1" onclick="goToHome()">取消</button>
+        <button class="btn btn-primary" style="flex:2" onclick="publishPost()">🐾 發布貼文</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+  PAGE: SHARE ZONE
+══════════════════════════════════ -->
+<div class="page" id="page-share">
+  <nav class="navbar">
+    <a class="nav-logo" style="cursor:pointer" onclick="goToHome()">
+      <span class="paw">🐾</span> 毛孩樂園
+    </a>
+    <div class="nav-links" id="share-nav-btns">
+      <!-- Filled dynamically -->
+    </div>
+  </nav>
+
+  <div class="share-hero">
+    <h1>🌟 毛孩分享區</h1>
+    <p>來自四面八方的毛孩故事，等你來發現！</p>
+  </div>
+
+  <div class="share-content">
+    <div class="section-title">🐾 所有貼文</div>
+    <div id="share-posts-list">
+      <div class="empty-state" id="share-empty">
+        <div class="icon">🌱</div>
+        <p>還沒有貼文，成為第一個分享的人吧！</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+  PAGE: PUBLIC PROFILE
+══════════════════════════════════ -->
+<div class="page" id="page-profile">
+  <nav class="navbar">
+    <a class="nav-logo" onclick="goToShare()" style="cursor:pointer">
+      <span class="paw">🐾</span> 毛孩樂園
+    </a>
+    <div class="nav-links">
+      <button class="nav-btn nav-btn-outline" onclick="goToShare()">← 返回分享區</button>
+    </div>
+  </nav>
+
+  <div class="home-layout">
+    <aside class="sidebar">
+      <div class="card profile-card">
+        <div class="profile-avatar-wrap" style="text-align:center;">
+          <div class="profile-avatar" id="pub-profile-avatar" style="width:88px;height:88px;border-radius:50%;margin:0 auto 1rem auto;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:700;color:#ccc;overflow:hidden;"></div>
+        </div>
+        <div class="profile-name" id="pub-profile-name" style="font-weight:700;font-size:1.4rem;color:var(--text-dark);text-align:center;"></div>
+        <div class="profile-id" id="pub-profile-id" style="color:var(--text-soft);font-size:0.9rem;text-align:center;margin-top:0.2rem;margin-bottom:1rem;"></div>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-num" id="pub-stat-posts">0</div>
+            <div class="stat-label">貼文</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="pub-stat-likes">0</div>
+            <div class="stat-label">獲讚</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <h3 style="margin-bottom:1rem;color:var(--text-dark);font-family:'Fredoka One',cursive;">🐾 他的貼文</h3>
+      <div id="pub-posts-list"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+  MODAL: 2FA Prompt (CAPTCHA)
+══════════════════════════════════ -->
+<div class="modal-overlay" id="twoFactorModal">
+  <div class="modal">
+    <div class="modal-title" style="margin-bottom:0.5rem; font-size:1.2rem">驗證哪一個是貓</div>
+    
+    <div class="captcha-grid" id="captcha-grid">
+      <!-- Generated via JS -->
+    </div>
+    <p style="text-align:center;color:var(--text-soft);font-size:0.75rem;margin-bottom:1rem">資料、圖片引用來自網路公開下載，僅作為課程使用，不為營利用途</p>
+
+    <div style="display:flex;gap:0.75rem">
+      <button class="btn btn-ghost" style="flex:1; background:var(--peach-soft); border:none; color:var(--text-mid)" onclick="closeTwoFactorModal()">取消</button>
+      <button class="btn btn-primary" style="flex:1" onclick="verifyTwoFactor()">驗證</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+  MODAL: Login Prompt
+══════════════════════════════════ -->
+<div class="modal-overlay" id="loginPromptModal">
+  <div class="modal">
+    <div style="text-align:center;margin-bottom:1rem;font-size:3rem">🐾</div>
+    <div class="modal-title">想要加入討論嗎？</div>
+    <p style="text-align:center;color:var(--text-soft);font-size:0.9rem;margin-bottom:1.5rem">
+      登入後就可以留言、按讚，和大家一起分享毛孩的故事！
+    </p>
+    <div style="display:flex;gap:0.75rem">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeLoginPrompt()">先看看就好</button>
+      <button class="btn btn-primary" style="flex:2" onclick="closeLoginPrompt();showPage('page-auth')">登入 / 註冊 →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let currentUser = null;
+let users = JSON.parse(localStorage.getItem('mh_users') || '[]');
+let posts = JSON.parse(localStorage.getItem('mh_posts') || '[]');
+
+// Save helpers
+function saveUsers() { localStorage.setItem('mh_users', JSON.stringify(users)); }
+function savePosts() { localStorage.setItem('mh_posts', JSON.stringify(posts)); }
+
+// ═══════════════════════════════════════════
+//  PAGE NAVIGATION
+// ═══════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goToHome() {
+  if (!currentUser) { showPage('page-auth'); return; }
+  updateHomeUI();
+  showPage('page-home');
+}
+
+function goToProfile(userId) {
+  if (currentUser && userId === currentUser.id) {
+    goToHome();
+    return;
+  }
+  const user = users.find(u => u.id === userId);
+  if (!user) { showToast('找不到該用戶！', 'error'); return; }
+  
+  // Render user info
+  document.getElementById('pub-profile-name').textContent = user.name;
+  document.getElementById('pub-profile-id').textContent = '@' + user.id;
+  const avatarEl = document.getElementById('pub-profile-avatar');
+  if (user.avatar) {
+    avatarEl.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    avatarEl.innerHTML = `<span>${user.name[0]}</span>`;
+  }
+  
+  // Render posts
+  const userPosts = posts.filter(p => p.authorId === userId).reverse();
+  document.getElementById('pub-stat-posts').textContent = userPosts.length;
+  const totalLikes = userPosts.reduce((sum, p) => sum + (p.likes || 0), 0);
+  document.getElementById('pub-stat-likes').textContent = totalLikes;
+  
+  const container = document.getElementById('pub-posts-list');
+  container.innerHTML = '';
+  if (userPosts.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>他還沒有發布過貼文哦！</p></div>`;
+  } else {
+    userPosts.forEach(post => {
+      container.appendChild(buildPostCard(post, false));
+    });
+  }
+  
+  showPage('page-profile');
+}
+
+function goToNewPost() {
+  if (!currentUser) { showPage('page-auth'); return; }
+  updateNewPostUI();
+  showPage('page-new-post');
+}
+
+function goToShare() {
+  updateShareNavUI();
+  renderSharePosts();
+  showPage('page-share');
+}
+
+// ═══════════════════════════════════════════
+//  AUTH TABS
+// ═══════════════════════════════════════════
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  if (tab === 'login') {
+    document.querySelectorAll('.auth-tab')[0].classList.add('active');
+    document.getElementById('form-login').classList.add('active');
+  } else {
+    document.querySelectorAll('.auth-tab')[1].classList.add('active');
+    document.getElementById('form-register').classList.add('active');
+  }
+}
+
+// ═══════════════════════════════════════════
+//  AVATAR PREVIEW (REGISTER)
+// ═══════════════════════════════════════════
+function previewAvatar(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('reg-avatar-img');
+    const emoji = document.getElementById('reg-avatar-emoji');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    emoji.style.display = 'none';
+    input._dataUrl = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ═══════════════════════════════════════════
+//  REGISTER
+// ═══════════════════════════════════════════
+function doRegister() {
+  const id = document.getElementById('reg-id').value.trim();
+  const name = document.getElementById('reg-name').value.trim();
+  const pw = document.getElementById('reg-pw').value;
+  const avatarInput = document.getElementById('reg-avatar-input');
+  const avatarData = avatarInput._dataUrl || null;
+
+  if (!id || !name || !pw) { showToast('請填寫所有必填欄位！', 'error'); return; }
+  if (pw.length < 4) { showToast('密碼至少需要 4 個字元', 'error'); return; }
+  if (!/^[a-zA-Z0-9_]+$/.test(id)) { showToast('ID 只能使用英文、數字、底線', 'error'); return; }
+  if (users.find(u => u.id === id)) { showToast('這個 ID 已被使用，換一個試試！', 'error'); return; }
+
+  const newUser = { id, name, pw, avatar: avatarData, createdAt: Date.now() };
+  users.push(newUser);
+  saveUsers();
+  showToast('🎉 註冊成功！現在登入吧～', 'success');
+
+  // Clear form
+  document.getElementById('reg-id').value = '';
+  document.getElementById('reg-name').value = '';
+  document.getElementById('reg-pw').value = '';
+  document.getElementById('reg-avatar-img').style.display = 'none';
+  document.getElementById('reg-avatar-emoji').style.display = '';
+  avatarInput._dataUrl = null;
+
+  switchAuthTab('login');
+  document.getElementById('login-id').value = id;
+}
+
+// ═══════════════════════════════════════════
+//  LOGIN & 2FA (CAPTCHA)
+// ═══════════════════════════════════════════
+let pendingLoginUser = null;
+
+let animalPool = [
+  { name: '貓', isCat: true, src: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=200&q=80' },
+  { name: '犀牛', isCat: false, src: 'https://images.unsplash.com/photo-1534062013894-31ea6734c89c?auto=format&fit=crop&w=200&q=80' },
+  { name: '大象', isCat: false, src: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=200&q=80' },
+  { name: '鱷魚', isCat: false, src: 'https://images.unsplash.com/photo-1519904250284-f3c25b39b5b9?auto=format&fit=crop&w=200&q=80' },
+  { name: '獅子', isCat: false, src: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=200&q=80' },
+  { name: '老虎', isCat: false, src: 'https://images.unsplash.com/photo-1503066211613-c17ebc9daef0?auto=format&fit=crop&w=200&q=80' },
+  { name: '烏龜', isCat: false, src: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=200&q=80' },
+  { name: '河馬', isCat: false, src: 'https://images.unsplash.com/photo-1533423996375-f914ab160932?auto=format&fit=crop&w=200&q=80' },
+  { name: '鳥', isCat: false, src: 'https://images.unsplash.com/photo-1555169062-013468b47731?auto=format&fit=crop&w=200&q=80' }
+];
+
+let captchaImages = [];
+
+function shuffleCaptchaImages() {
+  captchaImages = [...animalPool].sort(() => Math.random() - 0.5);
+}
+
+function renderCaptchaGrid() {
+  const grid = document.getElementById('captcha-grid');
+  grid.innerHTML = '';
+  if (captchaImages.length === 0) shuffleCaptchaImages();
+  
+  captchaImages.forEach((item) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'captcha-img-wrap';
+    wrap.dataset.isCat = item.isCat;
+    wrap.onclick = function() { this.classList.toggle('selected'); };
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.onerror = function() {
+      const fallback = document.createElement('div');
+      fallback.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#e2e8f0;color:#334155;font-size:3rem;line-height:1.2;';
+      const emojiMap = {'貓':'🐱','犀牛':'🦏','大象':'🐘','鱷魚':'🐊','獅子':'🦁','老虎':'🐯','烏龜':'🐢','河馬':'🦛','鳥':'🐦'};
+      fallback.innerHTML = `<div>${emojiMap[item.name] || '🐾'}</div><div style="font-size:1rem;font-weight:bold;margin-top:0.5rem">${item.name}</div>`;
+      wrap.replaceChild(fallback, img);
+    };
+    wrap.appendChild(img);
+    grid.appendChild(wrap);
+  });
+}
+
+function handleCaptchaUpload(input) {
+  if (!input.files || input.files.length === 0) return;
+  const files = Array.from(input.files).slice(0, 9);
+  
+  let newImages = [...captchaImages];
+  let loadedCount = 0;
+  
+  files.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      newImages[index] = { src: e.target.result, isCat: true };
+      loadedCount++;
+      if (loadedCount === files.length) {
+        captchaImages = newImages;
+        renderCaptchaGrid();
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function doLogin() {
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pw').value;
+  const user = users.find(u => u.id === id && u.pw === pw);
+  if (!user) { showToast('帳號或密碼錯誤，請再試試！', 'error'); return; }
+  
+  pendingLoginUser = user;
+  shuffleCaptchaImages();
+  renderCaptchaGrid();
+  document.getElementById('twoFactorModal').classList.add('active');
+}
+
+function verifyTwoFactor() {
+  const selected = document.querySelectorAll('.captcha-img-wrap.selected');
+  if (selected.length !== 1) {
+    showToast('請選取剛好「1張」貓咪圖片！', 'error');
+    return;
+  }
+  
+  if (selected[0].dataset.isCat !== 'true') {
+    showToast('驗證失敗：這不是貓咪哦，請重試！', 'error');
+    shuffleCaptchaImages();
+    renderCaptchaGrid();
+    return;
+  }
+  
+  currentUser = pendingLoginUser;
+  pendingLoginUser = null;
+  document.getElementById('twoFactorModal').classList.remove('active');
+  
+  showToast(`🐾 歡迎回來，${currentUser.name}！`, 'success');
+  document.getElementById('login-id').value = '';
+  document.getElementById('login-pw').value = '';
+  goToHome();
+}
+
+function closeTwoFactorModal() {
+  pendingLoginUser = null;
+  document.getElementById('twoFactorModal').classList.remove('active');
+}
+
+// ═══════════════════════════════════════════
+//  LOGOUT
+// ═══════════════════════════════════════════
+function doLogout() {
+  currentUser = null;
+  showToast('掰掰！期待下次見面 🐾', 'info');
+  showPage('page-auth');
+}
+
+// ═══════════════════════════════════════════
+//  HOME UI
+// ═══════════════════════════════════════════
+function updateHomeUI() {
+  const u = currentUser;
+  document.getElementById('home-profile-name').textContent = u.name;
+  document.getElementById('home-profile-id').textContent = '@' + u.id;
+
+  const myPosts = posts.filter(p => p.authorId === u.id);
+  const totalLikes = myPosts.reduce((sum, p) => sum + (p.likes || 0), 0);
+  document.getElementById('stat-posts').textContent = myPosts.length;
+  document.getElementById('stat-likes').textContent = totalLikes;
+
+  // Avatar
+  setAvatarEl('home-profile-avatar', u, 88, '2.2rem');
+  setAvatarEl('banner-avatar', u, 42, '1.2rem');
+
+  // Nav
+  const ph = document.getElementById('nav-avatar-placeholder-home');
+  if (u.avatar) {
+    ph.innerHTML = `<img src="${u.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--peach)">`;
+  } else {
+    ph.textContent = u.name[0];
+  }
+  document.getElementById('nav-username-home').textContent = u.name;
+
+  renderMyPosts();
+}
+
+function setAvatarEl(id, user, size, fontSize) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (user.avatar) {
+    el.style.fontSize = '';
+    el.style.background = '';
+    el.innerHTML = `<img src="${user.avatar}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;">`;
+    el.style.display = '';
+  } else {
+    el.innerHTML = `<span style="font-size:${fontSize}">${user.name[0]}</span>`;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  MY POSTS
+// ═══════════════════════════════════════════
+function renderMyPosts() {
+  const container = document.getElementById('my-posts-list');
+  const myPosts = posts.filter(p => p.authorId === currentUser.id).reverse();
+  const empty = document.getElementById('my-posts-empty');
+
+  if (myPosts.length === 0) {
+    if (!empty) {
+      container.innerHTML = `<div class="empty-state" id="my-posts-empty"><div class="icon">📭</div><p>還沒有貼文哦，快去分享你的毛孩故事！</p><button class="btn btn-primary" style="margin-top:1rem" onclick="goToNewPost()">✏️ 發第一篇貼文</button></div>`;
+    }
+    return;
+  }
+
+  const empEl = document.getElementById('my-posts-empty');
+  if (empEl) empEl.style.display = 'none';
+
+  // Remove old post elements (keep empty)
+  container.querySelectorAll('.post-card').forEach(e => e.remove());
+
+  myPosts.forEach(post => {
+    container.appendChild(buildPostCard(post, true));
+  });
+}
+
+// ═══════════════════════════════════════════
+//  NEW POST UI
+// ═══════════════════════════════════════════
+function updateNewPostUI() {
+  const u = currentUser;
+  document.getElementById('np-name').textContent = u.name;
+  document.getElementById('np-id').textContent = '@' + u.id;
+  const npAvatar = document.getElementById('np-avatar');
+  if (u.avatar) {
+    npAvatar.innerHTML = `<img src="${u.avatar}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">`;
+    npAvatar.style.fontSize = '';
+  } else {
+    npAvatar.innerHTML = `<span style="font-size:1.4rem">${u.name[0]}</span>`;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  POST IMAGE PREVIEW
+// ═══════════════════════════════════════════
+function previewPostImage(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('np-img-preview-img').src = e.target.result;
+    document.getElementById('np-img-preview').style.display = 'block';
+    document.getElementById('np-image-zone').style.display = 'none';
+    input._dataUrl = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function removePostImage() {
+  document.getElementById('np-img-preview').style.display = 'none';
+  document.getElementById('np-image-zone').style.display = 'block';
+  document.getElementById('np-img-preview-img').src = '';
+  const inp = document.getElementById('np-img-input');
+  inp.value = '';
+  inp._dataUrl = null;
+}
+
+// ═══════════════════════════════════════════
+//  PUBLISH POST
+// ═══════════════════════════════════════════
+function publishPost() {
+  const topic = document.getElementById('post-topic').value.trim();
+  const content = document.getElementById('post-content').value.trim();
+  const imgInput = document.getElementById('np-img-input');
+  const imageData = imgInput._dataUrl || null;
+
+  if (!topic) { showToast('請填寫貼文主題！', 'error'); return; }
+  if (!content) { showToast('請填寫貼文內容！', 'error'); return; }
+
+  const post = {
+    id: 'p' + Date.now(),
+    authorId: currentUser.id,
+    authorName: currentUser.name,
+    authorAvatar: currentUser.avatar || null,
+    topic,
+    content,
+    image: imageData,
+    likes: 0,
+    likedBy: [],
+    comments: [],
+    createdAt: Date.now()
+  };
+
+  posts.push(post);
+  savePosts();
+
+  // Reset form
+  document.getElementById('post-topic').value = '';
+  document.getElementById('post-content').value = '';
+  removePostImage();
+
+  showToast('🎉 貼文已發布！', 'success');
+  goToHome();
+}
+
+// ═══════════════════════════════════════════
+//  SHARE ZONE
+// ═══════════════════════════════════════════
+function updateShareNavUI() {
+  const nav = document.getElementById('share-nav-btns');
+  if (currentUser) {
+    const avatarHTML = currentUser.avatar
+      ? `<img src="${currentUser.avatar}" class="nav-avatar">`
+      : `<div class="nav-avatar-placeholder">${currentUser.name[0]}</div>`;
+    nav.innerHTML = `
+      <button class="nav-btn nav-btn-outline" onclick="goToHome()">🏠 我的首頁</button>
+      <button class="nav-btn nav-btn-fill" onclick="goToNewPost()">+ 發貼文</button>
+      ${avatarHTML}
+      <button class="nav-btn nav-btn-outline" onclick="doLogout()">登出</button>`;
+  } else {
+    nav.innerHTML = `
+      <button class="nav-btn nav-btn-outline" onclick="showPage('page-auth');switchAuthTab('login')">登入</button>
+      <button class="nav-btn nav-btn-fill" onclick="showPage('page-auth');switchAuthTab('register')">免費註冊</button>`;
+  }
+}
+
+function renderSharePosts() {
+  const container = document.getElementById('share-posts-list');
+  const allPosts = [...posts].reverse();
+  const emptyEl = document.getElementById('share-empty');
+
+  if (allPosts.length === 0) {
+    if (emptyEl) emptyEl.style.display = '';
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  container.querySelectorAll('.post-card').forEach(e => e.remove());
+  allPosts.forEach(post => {
+    container.appendChild(buildPostCard(post, false));
+  });
+}
+
+// ═══════════════════════════════════════════
+//  BUILD POST CARD
+// ═══════════════════════════════════════════
+function buildPostCard(post, isMyPage) {
+  const card = document.createElement('div');
+  card.className = 'card post-card';
+  card.id = 'post-' + post.id;
+
+  const timeAgo = formatTime(post.createdAt);
+  const liked = currentUser && post.likedBy && post.likedBy.includes(currentUser.id);
+
+  const avatarHTML = post.authorAvatar
+    ? `<div class="post-avatar" onclick="goToProfile('${post.authorId}')" style="cursor:pointer"><img src="${post.authorAvatar}" alt=""></div>`
+    : `<div class="post-avatar" onclick="goToProfile('${post.authorId}')" style="cursor:pointer">${post.authorName ? post.authorName[0] : '🐾'}</div>`;
+
+  const imageHTML = post.image
+    ? `<img class="post-image" src="${post.image}" alt="貼文圖片">`
+    : '';
+
+  card.innerHTML = `
+    <div class="post-header">
+      ${avatarHTML}
+      <div class="post-meta">
+        <div class="post-author" onclick="goToProfile('${post.authorId}')" style="cursor:pointer; color:var(--primary); font-weight:bold;">
+          ${escHtml(post.authorName)} <span style="font-weight:normal; color:var(--text-soft)">@${escHtml(post.authorId)}</span>
+        </div>
+        <div class="post-time">${timeAgo}</div>
+      </div>
+      <button class="btn btn-ghost" style="margin-left:auto; font-size:0.85rem; padding: 0.3rem 0.6rem; color: var(--primary); border: 1px solid var(--peach-soft); border-radius: 20px;" onclick="goToProfile('${post.authorId}')">
+        👤 個人主頁
+      </button>
+    </div>
+    <div class="post-topic">${escHtml(post.topic)}</div>
+    <div class="post-content">${escHtml(post.content)}</div>
+    ${imageHTML}
+    <div class="post-actions">
+      <button class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}', this)">
+        <span class="heart-icon">${liked ? '❤️' : '🤍'}</span>
+        <span class="like-count">${post.likes || 0}</span>
+      </button>
+      <button class="action-btn" onclick="toggleComments('${post.id}', this)">
+        💬 <span>${post.comments ? post.comments.length : 0}</span> 留言
+      </button>
+      ${(currentUser && currentUser.id === post.authorId) ? `
+        <button class="action-btn" style="margin-left:auto;color:#e57373" onclick="deletePost('${post.id}')">
+          🗑️ 刪除
+        </button>
+      ` : ''}
+    </div>
+    <div class="comments-section" id="comments-${post.id}">
+      <div class="comments-list" id="comments-list-${post.id}"></div>
+      ${buildCommentInput(post.id)}
+    </div>
+  `;
+
+  return card;
+}
+
+function buildCommentInput(postId) {
+  if (currentUser) {
+    return `
+      <div class="comment-input-area">
+        <input class="comment-input" id="comment-input-${postId}" placeholder="說說你的想法..." onkeydown="if(event.key==='Enter')submitComment('${postId}')">
+        <button class="btn btn-primary btn-sm" onclick="submitComment('${postId}')">送出</button>
+      </div>`;
+  } else {
+    return `<p style="font-size:0.82rem;color:var(--text-soft);text-align:center;padding:8px 0">
+      <a href="#" onclick="openLoginPrompt();return false" style="color:var(--coral);font-weight:700">登入後</a> 才能留言喔！
+    </p>`;
+  }
+}
+
+// ═══════════════════════════════════════════
+//  DELETE POST
+// ═══════════════════════════════════════════
+function deletePost(postId) {
+  if (!confirm('確定要刪除這篇貼文嗎？（刪除後無法恢復）')) return;
+  const idx = posts.findIndex(p => p.id === postId);
+  if (idx !== -1) {
+    posts.splice(idx, 1);
+    savePosts();
+    showToast('🗑️ 貼文已刪除', 'info');
+    if (document.getElementById('page-home').classList.contains('active')) {
+      updateHomeUI();
+    } else {
+      renderSharePosts();
+    }
+  }
+}
+
+// ═══════════════════════════════════════════
+//  LIKE
+// ═══════════════════════════════════════════
+function toggleLike(postId, btn) {
+  if (!currentUser) { openLoginPrompt(); return; }
+  const post = posts.find(p => p.id === postId);
+  if (!post) return;
+
+  if (!post.likedBy) post.likedBy = [];
+  const idx = post.likedBy.indexOf(currentUser.id);
+  if (idx === -1) {
+    post.likedBy.push(currentUser.id);
+    post.likes = (post.likes || 0) + 1;
+    btn.classList.add('liked');
+    btn.querySelector('.heart-icon').textContent = '❤️';
+  } else {
+    post.likedBy.splice(idx, 1);
+    post.likes = Math.max(0, (post.likes || 1) - 1);
+    btn.classList.remove('liked');
+    btn.querySelector('.heart-icon').textContent = '🤍';
+  }
+  btn.querySelector('.like-count').textContent = post.likes;
+  savePosts();
+}
+
+// ═══════════════════════════════════════════
+//  COMMENTS
+// ═══════════════════════════════════════════
+function toggleComments(postId, btn) {
+  const section = document.getElementById('comments-' + postId);
+  if (section.classList.contains('open')) {
+    section.classList.remove('open');
+  } else {
+    section.classList.add('open');
+    renderComments(postId);
+  }
+}
+
+function renderComments(postId) {
+  const post = posts.find(p => p.id === postId);
+  if (!post) return;
+  const list = document.getElementById('comments-list-' + postId);
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (!post.comments || post.comments.length === 0) {
+    list.innerHTML = '<p style="font-size:0.82rem;color:var(--text-soft);padding:4px 0">還沒有留言，來說第一句吧！</p>';
+    return;
+  }
+
+  post.comments.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'comment-item';
+    const avatarHTML = c.avatar
+      ? `<div class="comment-avatar" onclick="goToProfile('${c.authorId}')" style="cursor:pointer"><img src="${c.avatar}" alt=""></div>`
+      : `<div class="comment-avatar" onclick="goToProfile('${c.authorId}')" style="cursor:pointer">${c.name ? c.name[0] : '?'}</div>`;
+    div.innerHTML = `
+      ${avatarHTML}
+      <div class="comment-bubble">
+        <div class="comment-author" onclick="goToProfile('${c.authorId}')" style="cursor:pointer">${escHtml(c.name)}</div>
+        <div class="comment-text">${escHtml(c.text)}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function submitComment(postId) {
+  if (!currentUser) { openLoginPrompt(); return; }
+  const input = document.getElementById('comment-input-' + postId);
+  const text = input.value.trim();
+  if (!text) return;
+
+  const post = posts.find(p => p.id === postId);
+  if (!post) return;
+  if (!post.comments) post.comments = [];
+
+  post.comments.push({
+    id: 'c' + Date.now(),
+    authorId: currentUser.id,
+    name: currentUser.name,
+    avatar: currentUser.avatar || null,
+    text,
+    createdAt: Date.now()
+  });
+  savePosts();
+  input.value = '';
+
+  // Update comment count button
+  const card = document.getElementById('post-' + postId);
+  if (card) {
+    const cBtn = card.querySelector('.action-btn:nth-child(2) span');
+    if (cBtn) cBtn.textContent = post.comments.length;
+  }
+
+  renderComments(postId);
+}
+
+// ═══════════════════════════════════════════
+//  LOGIN PROMPT MODAL
+// ═══════════════════════════════════════════
+function openLoginPrompt() {
+  document.getElementById('loginPromptModal').classList.add('active');
+}
+function closeLoginPrompt() {
+  document.getElementById('loginPromptModal').classList.remove('active');
+}
+
+// ═══════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════
+function showToast(msg, type = 'info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 2900);
+}
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatTime(ts) {
+  const diff = Date.now() - ts;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return '剛剛';
+  if (mins < 60) return `${mins} 分鐘前`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} 小時前`;
+  const days = Math.floor(hrs / 24);
+  return `${days} 天前`;
+}
+
+function showHomeTab(tab) {
+  document.querySelectorAll('.nav-menu-item').forEach(i => i.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Close modal on overlay click
+document.getElementById('loginPromptModal').addEventListener('click', function(e) {
+  if (e.target === this) closeLoginPrompt();
+});
+
+// ─── INIT ───
+// If user was remembered (optional demo data)
+console.log('🐾 毛孩樂園 已就緒');
+</script>
+</body>
+</html>
